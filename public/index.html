@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArslanChat – Canlı Yazışma & Görüntülü Görüşme</title>
+<!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<!-- PWA & Mobile Web App Meta Tags -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0F766E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="/icon-192.png">
+</head>
+<body>
+
+<!-- ARKA PLAN GÖRSEL DEKORASYONU -->
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<!-- AUTH SAYFASI -->
+<div id="authPage" class="auth-page">
+  <div class="auth-box glass-card">
+    <div class="auth-logo">
+      <div class="logo-animation">
+        <span class="logo-icon">📡</span>
+      </div>
+      <h1>ArslanChat</h1>
+      <p>Gerçek Zamanlı İletişim Platformu</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="tab-btn active" onclick="showTab('login')">Giriş Yap</button>
+      <button class="tab-btn" onclick="showTab('register')">Kayıt Ol</button>
+    </div>
+    <div id="loginTab" class="tab-content active">
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+        <input type="text" id="loginUsername" placeholder="Kullanıcı adı" autocomplete="username">
+      </div>
+      <div class="input-wrapper">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="loginPassword" placeholder="Şifre" autocomplete="current-password">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">Giriş Yap</button>
+      <div id="loginError" class="error-msg"></div>
+    </div>
+    <div id="registerTab" class="tab-content">
+      <div class="input-wrapper">
+        <span class="input-icon">👤</span>
+        <input type="text" id="regUsername" placeholder="Kullanıcı adı (en az 3 karakter)">
+      </div>
+      <div class="input-wrapper">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="regPassword" placeholder="Şifre (en az 6 karakter)">
+      </div>
+      <div class="input-wrapper">
+        <span class="input-icon">🔑</span>
+        <input type="password" id="regPassword2" placeholder="Şifre tekrar">
+      </div>
+      <button class="btn-primary" onclick="doRegister()">Kayıt Ol</button>
+      <div id="regError" class="error-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ANA UYGULAMA -->
+<div id="app" class="app hidden">
+  <!-- SİDEBAR -->
+  <aside class="sidebar glass-panel" id="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-small">📡 ArslanChat</span>
+      <button class="btn-icon close-menu-btn" onclick="toggleSidebar()" title="Kapat">✕</button>
+    </div>
+    
+    <!-- KULLANICI PROFİL ALANI -->
+    <div class="user-info-card" onclick="openProfileModal()">
+      <div class="user-avatar-wrapper">
+        <div class="user-avatar" id="myAvatar">?</div>
+        <span class="status-dot-indicator online"></span>
+      </div>
+      <div class="user-details">
+        <span id="myDisplayName" class="my-display-name">—</span>
+        <span class="my-username" id="myUsername">@user</span>
+      </div>
+      <button class="btn-icon edit-profile-icon" title="Profili Düzenle">⚙️</button>
+    </div>
+
+    <!-- SES & OTURUM KONTROLLERİ -->
+    <div class="controls-panel">
+      <button class="btn-control" id="soundToggleBtn" onclick="toggleSound()" title="Sesli Bildirimleri Kapat/Aç">🔊 Ses Açık</button>
+      <button class="btn-control logout-btn" onclick="doLogout()" title="Oturumu Kapat">⏻ Çıkış Yap</button>
+    </div>
+
+    <!-- KANALLAR BÖLÜMÜ -->
+    <div class="sidebar-section">
+      <div class="section-header">
+        <span>KANALLAR</span>
+        <button class="btn-tiny" onclick="showCreateChannel()" title="Yeni Kanal Oluştur">+</button>
+      </div>
+      <ul id="channelList" class="nav-list"></ul>
+    </div>
+    
+    <!-- ÇEVRİMİÇİ KULLANICILAR BÖLÜMÜ -->
+    <div class="sidebar-section">
+      <div class="section-header"><span>ÇEVRİMİÇİ KULLANICILAR</span></div>
+      <ul id="userList" class="nav-list"></ul>
+    </div>
+    <!-- SIDEBAR SIGNATURE FOOTER -->
+    <div class="sidebar-signature">
+      <span>✨ Developed by Sedanur Arslan</span>
+    </div>
+  </aside>
+
+  <!-- ANA CHAT ALANI -->
+  <main class="main">
+    <header class="chat-header glass-header">
+      <div class="header-left">
+        <button class="btn-icon mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+        <div>
+          <span id="chatTitle" class="chat-title">#genel</span>
+          <span id="chatSubtitle" class="chat-subtitle"></span>
+        </div>
+      </div>
+      <div class="header-actions" id="headerActions"></div>
+    </header>
+    
+    <!-- MESAJLAR ALANI -->
+    <div class="messages-area" id="messagesArea">
+      <div class="welcome-msg">
+        <div class="welcome-icon">👋</div>
+        <h2>ArslanChat Ailesine Hoş Geldiniz!</h2>
+        <p>Lütfen sol taraftaki menüden bir sohbet odası seçin veya çevrim içi kullanıcılara tıklayarak özel mesaj (DM) başlatın.</p>
+      </div>
+    </div>
+    
+    <!-- MESAJ YAZMA ALANI -->
+    <div class="message-input-container">
+      <div class="message-input-area glass-input">
+        <button class="btn-icon btn-attach" onclick="triggerFileUpload()" title="Dosya/Görsel Yükle">📎</button>
+        <input type="file" id="fileUploadInput" style="display:none" onchange="handleFileUpload(event)">
+        <input type="text" id="messageInput" placeholder="Mesaj yaz..." disabled
+               onkeydown="if(event.key==='Enter')sendMessage()">
+        
+        <!-- Emoji Seçici Butonu ve Paneli -->
+        <div class="emoji-container">
+          <button class="btn-icon btn-emoji" onclick="toggleEmojiPicker()" title="Emoji Ekle">😀</button>
+          <div id="emojiPicker" class="emoji-picker hidden">
+            <div class="emoji-header">Sık Kullanılanlar</div>
+            <div class="emoji-grid">
+              <span onclick="insertEmoji('😀')">😀</span>
+              <span onclick="insertEmoji('😂')">😂</span>
+              <span onclick="insertEmoji('🥰')">🥰</span>
+              <span onclick="insertEmoji('👍')">👍</span>
+              <span onclick="insertEmoji('🔥')">🔥</span>
+              <span onclick="insertEmoji('🎉')">🎉</span>
+              <span onclick="insertEmoji('👏')">👏</span>
+              <span onclick="insertEmoji('❤️')">❤️</span>
+              <span onclick="insertEmoji('🤔')">🤔</span>
+              <span onclick="insertEmoji('🚀')">🚀</span>
+              <span onclick="insertEmoji('👀')">👀</span>
+              <span onclick="insertEmoji('✨')">✨</span>
+              <span onclick="insertEmoji('💻')">💻</span>
+              <span onclick="insertEmoji('🙌')">🙌</span>
+              <span onclick="insertEmoji('😮')">😮</span>
+              <span onclick="insertEmoji('😢')">😢</span>
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn-send" onclick="sendMessage()" id="sendBtn" disabled>➤</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- SAĞ PANEL (KANAL ÜYELERİ) -->
+  <aside class="right-panel glass-panel" id="rightPanel">
+    <div class="section-header"><span>KANALDAKİLER</span></div>
+    <ul id="roomUserList" class="nav-list"></ul>
+  </aside>
+</div>
+
+<!-- GÖRÜNTÜLÜ GÖRÜŞME MODAL -->
+<div id="callModal" class="call-modal hidden">
+  <div class="call-container glass-card">
+    <div class="call-header">
+      <div class="call-status-wrapper">
+        <span class="pulse-dot"></span>
+        <span id="callStatus">Bağlanıyor...</span>
+      </div>
+      <button class="btn-icon" onclick="endCall()">✕</button>
+    </div>
+    <div class="videos-container">
+      <div class="video-wrapper">
+        <video id="remoteVideo" autoplay playsinline></video>
+        <span class="video-label" id="remoteLabel">Karşı Taraf</span>
+      </div>
+      <div class="video-wrapper local">
+        <video id="localVideo" autoplay playsinline muted></video>
+        <span class="video-label">Ben</span>
+      </div>
+    </div>
+    <div class="call-controls">
+      <button class="ctrl-btn" onclick="toggleMic()" id="micBtn" title="Mikrofon Kapat/Aç">🎤</button>
+      <button class="ctrl-btn" onclick="toggleCam()" id="camBtn" title="Kamera Kapat/Aç">📷</button>
+      <button class="ctrl-btn end" onclick="endCall()" title="Görüşmeyi Kapat">📵</button>
+    </div>
+  </div>
+</div>
+
+<!-- GELEN ARAMA PENCERESİ -->
+<div id="incomingCall" class="incoming-call hidden glass-card">
+  <div class="incoming-inner">
+    <span class="call-ring">📞</span>
+    <p id="callerName">— sizi görüntülü arıyor...</p>
+    <div class="incoming-btns">
+      <button class="btn-accept" onclick="acceptCall()">✔ Kabul Et</button>
+      <button class="btn-reject" onclick="rejectCall()">✗ Reddet</button>
+    </div>
+  </div>
+</div>
+
+<!-- KANAL OLUŞTURMA MODAL -->
+<div id="createChannelModal" class="modal hidden">
+  <div class="modal-inner glass-card">
+    <h3>Yeni Kanal Oluştur</h3>
+    <input type="text" id="newChannelName" placeholder="kanal-adi (örn: ders-notlari)">
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="createChannel()">Oluştur</button>
+      <button class="btn-secondary" onclick="closeModal('createChannelModal')">İptal</button>
+    </div>
+    <div id="channelError" class="error-msg"></div>
+  </div>
+</div>
+
+<!-- KULLANICI PROFİL AYARLARI MODAL -->
+<div id="profileModal" class="modal hidden">
+  <div class="modal-inner glass-card profile-modal-inner">
+    <h3>Profil Ayarları</h3>
+    <div class="profile-preview-container">
+      <div class="avatar-large" id="profileAvatarPreview">?</div>
+      <div class="profile-preview-info">
+        <span class="preview-title">Görünen İsim</span>
+        <input type="text" id="profileDisplayName" placeholder="Görünen isminiz">
+      </div>
+    </div>
+    <div class="avatar-selector-section">
+      <span>Avatar Seçin</span>
+      <div class="avatar-grid" id="avatarGrid">
+        <!-- SVG Avatarlar dinamik yüklenecek -->
+      </div>
+    </div>
+    <div class="blocked-users-section">
+      <span>Engellenen Kullanıcılar</span>
+      <ul id="profileBlockedList" class="blocked-list"></ul>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="saveProfile()">Kaydet</button>
+      <button class="btn-secondary" onclick="closeModal('profileModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- MESAJ DÜZENLEME MODAL -->
+<div id="editMessageModal" class="modal hidden">
+  <div class="modal-inner glass-card">
+    <h3>Mesajı Düzenle</h3>
+    <input type="text" id="editMessageInput" placeholder="Mesajınızı düzenleyin..." onkeydown="if(event.key==='Enter')saveEditedMessage()">
+    <input type="hidden" id="editMessageId">
+    <div class="modal-btns">
+      <button class="btn-primary" onclick="saveEditedMessage()">Güncelle</button>
+      <button class="btn-secondary" onclick="closeModal('editMessageModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

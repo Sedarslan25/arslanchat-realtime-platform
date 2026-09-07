@@ -1,0 +1,22 @@
+{
+  "name": "ArslanChat",
+  "short_name": "ArslanChat",
+  "description": "Web Tabanlı IRC / Canlı Yazışma ve Görüntülü Görüşme Sistemi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDF2F8",
+  "theme_color": "#0F766E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

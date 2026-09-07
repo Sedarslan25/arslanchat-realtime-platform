@@ -1,0 +1,157 @@
+Kullanılacak Teknolojiler
+Backend için aşağıdaki dillerden biri seçilecektir:
+C++
+C#
+Node.js
+Frontend tarafında şu teknolojiler kullanılacaktır:
+PHP
+JavaScript
+HTML
+CSS
+Veritabanı olarak aşağıdakilerden biri tercih edilebilir:
+MySQL / MariaDB
+PostgreSQL
+SQLite
+MongoDB
+Proje Tanımı
+Geliştirilecek sistem, kullanıcıların web tarayıcısı üzerinden giriş yaparak sohbet odalarına katılabildiği, yazılı mesajlaşma yapabildiği ve uygun durumlarda WebRTC ile canlı sesli/görüntülü görüşme başlatabildiği bir platform olacaktır.
+Sistem IRC mantığına benzer şekilde çalışacaktır. Kullanıcılar kanallara katılabilecek, özel mesaj gönderebilecek, çevrim içi kullanıcıları görebilecek ve belirli kullanıcılarla görüntülü görüşme başlatabilecektir.
+Temel Özellikler
+1. Kullanıcı Yönetimi
+Sistemde aşağıdaki özellikler bulunmalıdır:
+Kullanıcı kayıt ekranı
+Kullanıcı giriş ekranı
+Oturum yönetimi
+Şifrelerin güvenli şekilde saklanması
+Kullanıcı adı benzersizliği
+Çevrim içi / çevrim dışı durum bilgisi
+2. Kanal / Oda Sistemi
+IRC benzeri kanal yapısı oluşturulmalıdır.
+Beklenen özellikler:
+Genel sohbet odaları
+Yeni oda oluşturma
+Odaya katılma
+Odadan ayrılma
+Odadaki kullanıcı listesini görüntüleme
+Oda içi mesajlaşma
+Örnek oda isimleri:
+#genel
+#ders
+#yardim
+#proje
+3. Gerçek Zamanlı Mesajlaşma
+Sistem, kullanıcılar arasında anlık mesajlaşmayı desteklemelidir.
+Beklenen özellikler:
+Oda içi mesaj gönderme
+Özel mesaj gönderme
+Mesaj zaman bilgisinin gösterilmesi
+Gönderen kullanıcı adının gösterilmesi
+Mesaj geçmişinin veritabanında tutulması
+4. WebRTC ile Sesli / Görüntülü Görüşme
+Sistemin en önemli bölümlerinden biri WebRTC desteğidir.
+Beklenen özellikler:
+Kullanıcının kamera ve mikrofon erişimi alması
+İki kullanıcı arasında görüntülü görüşme başlatılması
+Görüşme daveti gönderme
+Daveti kabul etme / reddetme
+Görüşmeyi sonlandırma
+Karşılıklı video görüntülerinin ekranda gösterilmesi
+WebRTC bağlantısı için signaling işlemi backend üzerinden yapılmalıdır.
+5. Signaling Sunucusu
+WebRTC bağlantısı için aşağıdaki bilgilerin istemciler arasında aktarılması gerekir:
+SDP offer
+SDP answer
+ICE candidate bilgileri
+Bu iletişim backend tarafından yönetilmelidir.
+Backend dili olarak Node.js, C# veya C++ kullanılabilir.
+6. Arayüz
+Frontend tarafı PHP ve JavaScript ile geliştirilecektir.
+Arayüzde bulunması gereken ekranlar:
+Giriş ekranı
+Kayıt ekranı
+Ana sohbet ekranı
+Oda listesi
+Kullanıcı listesi
+Mesajlaşma alanı
+Görüntülü görüşme alanı
+Bildirim / davet penceresi
+Teknik Gereksinimler
+Projede aşağıdaki teknik konular uygulanmalıdır:
+WebSocket veya benzeri gerçek zamanlı iletişim yöntemi
+WebRTC API kullanımı
+Backend signaling yapısı
+Kullanıcı oturum kontrolü
+Veritabanı bağlantısı
+Temel hata yönetimi
+Güvenli şifreleme
+Temiz ve anlaşılır kod yapısı
+Minimum Teslim Kriterleri
+Projenin başarılı sayılabilmesi için aşağıdaki özellikler çalışır durumda olmalıdır:
+Kullanıcı kayıt ve giriş sistemi
+En az bir sohbet odasına katılma
+Gerçek zamanlı mesaj gönderme ve alma
+Çevrim içi kullanıcı listesinin gösterilmesi
+İki kullanıcı arasında WebRTC görüntülü görüşme
+Görüşme başlatma ve sonlandırma
+Mesajların veritabanında saklanması
+Proje kurulum dokümantasyonu
+Ekstra Puan Özellikleri
+Aşağıdaki özellikler zorunlu değildir, ancak ek puan kazandırır:
+Grup görüntülü görüşme
+Dosya gönderme
+Emoji desteği
+Kullanıcı profil fotoğrafı
+Kanal yöneticisi / moderatör sistemi
+Kullanıcı engelleme
+Mesaj silme / düzenleme
+Bildirim sesi
+Mobil uyumlu tasarım
+Docker ile kurulum
+HTTPS desteği
+TURN/STUN sunucusu yapılandırması
+Teslim Edilecek Dosyalar
+Öğrenciler aşağıdaki çıktıları teslim etmelidir:
+Proje kaynak kodları
+Veritabanı şeması
+Kurulum dokümanı
+Kullanım kılavuzu
+Kısa teknik rapor
+Ekran görüntüleri
+Çalışan demo videosu
+Teknik Rapor İçeriği
+Rapor şu başlıklardan oluşmalıdır:
+Proje amacı
+Kullanılan teknolojiler
+Sistem mimarisi
+Veritabanı tasarımı
+WebRTC bağlantı akışı
+Signaling yapısı
+Karşılaşılan problemler
+Güvenlik önlemleri
+Sonuç ve değerlendirme
+Değerlendirme Kriterleri
+Kriter
+Puan
+Kullanıcı kayıt/giriş sistemi
+10
+IRC benzeri oda yapısı
+15
+Gerçek zamanlı mesajlaşma
+15
+WebRTC görüntülü görüşme
+25
+Backend signaling yapısı
+15
+Veritabanı kullanımı
+10
+Arayüz tasarımı ve kullanılabilirlik
+5
+Dokümantasyon
+5
+Toplam
+100
+Teslim Süresi
+Ödev teslim süresi öğretim elemanı tarafından belirlenecektir. Geç teslimlerde puan kesintisi uygulanabilir.
+Notlar
+Projede hazır sohbet veya görüntülü görüşme yazılımları doğrudan kullanılamaz. Ancak WebRTC, WebSocket, veritabanı ve arayüz kütüphanelerinden yararlanılabilir.
+Öğrenciler kullandıkları tüm açık kaynak kütüphaneleri raporda belirtmelidir.
